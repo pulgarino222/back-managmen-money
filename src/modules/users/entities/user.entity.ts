@@ -1,6 +1,9 @@
 import { IsEmail, IsNumber, IsString } from "class-validator";
-import { Column, PrimaryGeneratedColumn, Entity, CreateDateColumn, ManyToMany, JoinTable } from "typeorm";
-import { Role } from '../../../auth/entities/roles.entity'; // Importa la entidad Role
+import { Column, PrimaryGeneratedColumn, Entity, CreateDateColumn, ManyToMany, JoinTable, OneToMany } from "typeorm";
+import { Role } from '../../../auth/entities/roles.entity';
+import { Income } from "src/modules/income/entities/income.entity";
+import { Expense } from "src/modules/expenses/entities/expense.entity";
+import { Budget } from "src/modules/budget/entities/budget.entity";
 
 @Entity()
 export class User {
@@ -33,4 +36,13 @@ export class User {
     @ManyToMany(() => Role, role => role.users)
     @JoinTable() 
     roles: Role[];
+
+    @OneToMany(() => Income, income => income.user)
+    incomes: Income[];
+
+    @OneToMany(() => Expense, expense => expense.user)
+    expenses: Expense[];
+
+    @OneToMany(() => Budget, budget => budget.user)
+    budgets: Budget[]
 }
